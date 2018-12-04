@@ -1,0 +1,19 @@
+{
+  "name": "dvb-helper",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node-dev -r ts-node/register ./src/index.ts"
+  },
+  "dependencies": {
+    "dvbjs": "^5.0.1",
+    "restify": "^7.2.3"
+  },
+  "devDependencies": {
+    "@types/restify": "^7.2.6",
+    "node-dev": "^3.1.3",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.1"
+  }
+}

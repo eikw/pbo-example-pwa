@@ -1,0 +1,101 @@
+<html>
+
+<head>
+    <title>DVB Helper</title>
+    <style>
+        .hidden {
+            visibility: hidden;
+        }
+
+        table {
+            width: 80%;
+        }
+        td {
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+</head>
+
+<body>
+    <div id="search">
+        Search: <input id="query">
+        <button onclick="search()">GO</button>
+    </div>
+    <div id="result">
+        <table id="resultTable">
+        </table>
+    </div>
+    <script>
+
+        function search() {
+            const searchQuery = document.getElementById('query').value;
+            const table = document.getElementById('resultTable');
+            table.innerHTML = '';
+
+            fetch(`http://localhost:8080/search/${searchQuery}`)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (myJson) {
+                    myJson.forEach(element => {
+                        const trNode = document.createElement('tr');
+                        const tdNode = document.createElement('td');
+                        const content = document.createTextNode(`${element.name} - ${element.city}`);
+                        const btnNode = document.createElement('button');
+                        btnNode.innerHTML = 'plan';
+                        btnNode.addEventListener('click', () => {
+                            getPlan(element.id);
+                        });
+
+                        tdNode.appendChild(content);
+                        tdNode.appendChild(btnNode);
+                        trNode.appendChild(tdNode);
+                        table.appendChild(trNode);
+                    });
+                });
+        }
+
+        function getPlan(id) {
+            const table = document.getElementById('resultTable');
+            table.innerHTML = '';
+
+            fetch(`http://localhost:8080/plan/${id}`)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (myJson) {
+                    myJson.forEach(element => {
+                        const trNode = document.createElement('tr');
+                        const tdNode = document.createElement('td');
+                        const content = document.createTextNode(
+                            `
+                            Linie: ${element.line} / 
+                            Richtung: ${element.direction} /
+                            Geplant: ${format(element.scheduledTime)} / 
+                            Ankunft: ${format(element.arrivalTime)} / 
+                            Verspaetung: ${formatDelay(element.delayTime)}
+                            `);
+
+                        tdNode.appendChild(content);
+                        trNode.appendChild(tdNode);
+                        table.appendChild(trNode);
+                    });
+                });
+        }
+
+        function format(string) {
+            return moment(string).format('HH:mm');
+        }
+
+        function formatDelay(string) {
+            return moment(string).format('mm');
+        }
+    </script>
+</body>
+
+</html>
