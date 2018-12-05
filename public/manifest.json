@@ -1,0 +1,15 @@
+{
+    "name": "DVB Helper App",
+    "short_name": "DVBplus",
+    "display": "minimal-ui",
+    "start_url": "/",
+    "theme_color": "#fdc400",
+    "background_color": "#111111",
+    "icons": [
+        {
+            "src": "image.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ]
+}

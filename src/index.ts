@@ -42,7 +42,7 @@ server.use(restify.plugins.bodyParser());
 server.get('/search/:query', searchStation);
 server.get('/plan/:id', getPlanFor);
 // static content
-server.get('/*.html', restify.plugins.serveStatic({
+server.get('/*', restify.plugins.serveStatic({
   directory: './public',
   default: 'index.html'
 }))

@@ -16,7 +16,7 @@
             display: flex;
             justify-content: space-between;
         }
-        
+
         td a {
             margin-right: 10px;
         }
@@ -25,6 +25,8 @@
             background: #CCC
         }
     </style>
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <link rel="manifest" href="manifest.json" />
 </head>
 
 <body>
@@ -40,7 +42,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const query = urlParams.get('query');
 
-        if(query) {
+        if (query) {
             document.getElementById('query').value = query;
             search(query)
         }

@@ -22,61 +22,63 @@
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <link rel="manifest" href="manifest.json" />
 </head>
 
 <body>
     <a id="back">Back</a>
-        <div id="result">
-            <table id="resultTable">
-            </table>
-        </div>
-        <script>
-            const link = document.getElementById('back');
+    <div id="result">
+        <table id="resultTable">
+        </table>
+    </div>
+    <script>
+        const link = document.getElementById('back');
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const myParam = urlParams.get('id');
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get('id');
 
-            link.href = `index.html?query=${urlParams.get('query')}`;
+        link.href = `index.html?query=${urlParams.get('query')}`;
 
-            if (myParam) {
-                getPlan(myParam);
-            }
+        if (myParam) {
+            getPlan(myParam);
+        }
 
-            function getPlan(id) {
-                const table = document.getElementById('resultTable');
-                table.innerHTML = '';
+        function getPlan(id) {
+            const table = document.getElementById('resultTable');
+            table.innerHTML = '';
 
-                fetch(`http://localhost:8080/plan/${id}`)
-                    .then(function (response) {
-                        return response.json();
-                    })
-                    .then(function (myJson) {
-                        myJson.forEach(element => {
-                            const trNode = document.createElement('tr');
-                            const tdNode = document.createElement('td');
-                            const content = document.createTextNode(
-                                `
+            fetch(`http://localhost:8080/plan/${id}`)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (myJson) {
+                    myJson.forEach(element => {
+                        const trNode = document.createElement('tr');
+                        const tdNode = document.createElement('td');
+                        const content = document.createTextNode(
+                            `
                             Linie: ${element.line} / 
                             Richtung: ${element.direction} /
                             Abfahrt: ${format(element.scheduledTime)}
                             `
-                            );
+                        );
 
-                            tdNode.appendChild(content);
-                            trNode.appendChild(tdNode);
-                            table.appendChild(trNode);
-                        });
+                        tdNode.appendChild(content);
+                        trNode.appendChild(tdNode);
+                        table.appendChild(trNode);
                     });
-            }
+                });
+        }
 
-            function format(string) {
-                return moment(string).format('HH:mm');
-            }
+        function format(string) {
+            return moment(string).format('HH:mm');
+        }
 
-            function formatDelay(string) {
-                return moment(string).format('mm');
-            }
-        </script>
+        function formatDelay(string) {
+            return moment(string).format('mm');
+        }
+    </script>
 </body>
 
 </html>
