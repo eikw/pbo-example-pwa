@@ -1,12 +1,41 @@
+let swReg = false;
+let isSubscribed = null;
+let subscription = null;
+
+function urlB64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
 function initSw() {
-    if (navigator.serviceWorker) {
+    if (navigator.serviceWorker && 'PushManager' in window) {
         navigator.serviceWorker.
             register('./sw.js').then(function (registration) {
                 console.log('Service Worker registered');
+                swReg = registration;
+                initPush();
             });
     } else {
-        console.warn('Service Worker not supported');
+        console.warn('Push not supported');
     }
+}
+
+function initPush() {
+    swReg.pushManager.getSubscription()
+        .then(function (subscription) {
+            isSubscribed = !(subscription === null);
+            update()
+        })
 }
 
 // init Pages
@@ -31,6 +60,37 @@ function initIndexPage() {
         document.getElementById('query').value = query;
         search(query)
     }
+}
+
+// Handle Push
+function subscribe() {
+    if (!isSubscribed) {
+        subscribeUser();
+    }
+}
+
+function subscribeUser() {
+    const applicationServerKey = urlB64ToUint8Array('BAmAlnkU7ilFrZhprnHz7UbcjtmdCTZY-anNC6Pj5psuu9ez4jAxKwgJWwND7rJjHpNqyc4GcK6OP-Z371-iGgU');
+    swReg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: applicationServerKey
+    })
+        .then(function (subscription) {
+            console.log('User is subscribed.');
+
+            isSubscribed = true;
+
+            update();
+        })
+        .catch(function (err) {
+            console.log('Failed to subscribe the user: ', err);
+            update();
+        });
+}
+
+function update() {
+    const btn = document.getElementById('push');
+    btn.disabled = isSubscribed;
 }
 
 // Helper methods

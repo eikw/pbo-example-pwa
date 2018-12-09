@@ -10,7 +10,8 @@ self.addEventListener('install', function (e) {
         '/plan.html',
         '/manifest.json',
         '/image.png',
-        '/offline.html'
+        '/offline.html',
+        '/main.js'
       ])
     })
   );
@@ -35,4 +36,20 @@ self.addEventListener('fetch', function (event) {
       });
     })
   );
+});
+
+self.addEventListener('push', function (event) {
+  console.log('[Service Worker] Push Received.');
+  const title = 'Push';
+  const options = {
+    body: 'Test'
+  };
+
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener('notificationclick', function(event) {
+  console.log('[Service Worker] Notification click Received.');
+
+  event.notification.close();
 });
