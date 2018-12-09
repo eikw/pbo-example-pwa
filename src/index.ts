@@ -39,8 +39,8 @@ server.use(restify.plugins.bodyParser());
 // routes
 
 // dvb-routes
-server.get('/search/:query', searchStation);
-server.get('/plan/:id', getPlanFor);
+server.get('/api/search/:query', searchStation);
+server.get('/api/plan/:id', getPlanFor);
 // static content
 server.get('/*', restify.plugins.serveStatic({
   directory: './public',

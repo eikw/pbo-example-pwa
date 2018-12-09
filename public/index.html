@@ -27,6 +27,7 @@
     </style>
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <link rel="manifest" href="manifest.json" />
+    <script src="main.js"></script>
 </head>
 
 <body>
@@ -39,53 +40,8 @@
         </table>
     </div>
     <script>
-
-        navigator.serviceWorker && navigator.serviceWorker.register('./sw.js').then(function (registration) {
-            console.log('Excellent, registered with scope: ', registration.scope);
-        });
-        
-        const urlParams = new URLSearchParams(window.location.search);
-        const query = urlParams.get('query');
-
-        if (query) {
-            document.getElementById('query').value = query;
-            search(query)
-        }
-
-        function keypress(event) {
-            if (event.keyCode == 13) {
-                link();
-            }
-        }
-
-        function link() {
-            window.location.replace(`index.html?query=${document.getElementById('query').value}`);
-        }
-
-        function search(searchQuery) {
-            const table = document.getElementById('resultTable');
-            table.innerHTML = '';
-
-            fetch(`http://localhost:8080/search/${searchQuery}`)
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (myJson) {
-                    myJson.forEach(element => {
-                        const trNode = document.createElement('tr');
-                        const tdNode = document.createElement('td');
-                        const content = document.createTextNode(`${element.name} - ${element.city}`);
-                        const btnNode = document.createElement('a');
-                        btnNode.innerHTML = 'plan';
-                        btnNode.href = `plan.html?id=${element.id}&query=${searchQuery}`;
-
-                        tdNode.appendChild(content);
-                        tdNode.appendChild(btnNode);
-                        trNode.appendChild(tdNode);
-                        table.appendChild(trNode);
-                    });
-                });
-        }
+        initSw();
+        initIndexPage();
     </script>
 </body>
 
