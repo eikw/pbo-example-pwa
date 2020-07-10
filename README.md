@@ -6,13 +6,13 @@ Start
 First install the dependencies:
 
 ``
-yarn
+npm
 ``
 
 start the application
 
 ``
-yarn start
+npm start
 ``
 
 The appliation will be served on *localhost:8080*
