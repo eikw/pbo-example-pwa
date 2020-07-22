@@ -7,13 +7,13 @@
     "start": "node-dev -r ts-node/register ./src/index.ts"
   },
   "dependencies": {
-    "dvbjs": "^5.0.1",
-    "restify": "^7.2.3"
+    "dvbjs": "^6.0.0",
+    "restify": "^8.5.1"
   },
   "devDependencies": {
-    "@types/restify": "^7.2.6",
-    "node-dev": "^3.1.3",
-    "ts-node": "^7.0.1",
-    "typescript": "^3.2.1"
+    "@types/restify": "^8.4.2",
+    "node-dev": "^5.0.0",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
   }
 }
